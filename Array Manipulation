@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Function to perform array manipulation
+long arrayManipulation(int n, int m, int queries[m][3]) {
+    // Allocate memory for the difference array and initialize to 0
+    long* arr = calloc(n + 2, sizeof(long));
+
+    // Apply the difference array technique for each query
+    for (int i = 0; i < m; i++) {
+        int a = queries[i][0];
+        int b = queries[i][1];
+        int k = queries[i][2];
+
+        arr[a] += k;
+        arr[b + 1] -= k;
+    }
+
+    // Find the maximum value using prefix sum
+    long max = 0, current = 0;
+    for (int i = 1; i <= n; i++) {
+        current += arr[i];
+        if (current > max) {
+            max = current;
+        }
+    }
+
+    // Free allocated memory
+    free(arr);
+
+    return max;
+}
+
+int main() {
+    int n, m;
+
+    // Read the size of the array (n) and the number of queries (m)
+    scanf("%d %d", &n, &m);
+
+    // Declare a 2D array to store queries
+    int queries[m][3];
+    for (int i = 0; i < m; i++) {
+        scanf("%d %d %d", &queries[i][0], &queries[i][1], &queries[i][2]);
+    }
+
+    // Call the arrayManipulation function and get the result
+    long result = arrayManipulation(n, m, queries);
+
+    // Print the result
+    printf("%ld\n", result);
+
+    return 0;
+}
